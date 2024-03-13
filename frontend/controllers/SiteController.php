@@ -16,6 +16,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\UploadedFile;
 
 /**
  * Site controller
@@ -151,7 +152,21 @@ class SiteController extends Controller
     {
         $model = new UploadImageForm();
 
+        if (Yii::$app->request->isPost) {
+            $model->files = UploadedFile::getInstances($model, 'files');
+            if ($model->upload()) {
+                Yii::$app->session->setFlash('success', "Картинки успешно загружены");
+            } else {
+                rYii::$app->session->setFlash('error', "Картинки не загружены");
+            }
+        }
+
         return $this->render('upload', ['model' => $model]);
+    }
+
+    public function actionImages()
+    {
+        return $this->render('images');
     }
 
     /**

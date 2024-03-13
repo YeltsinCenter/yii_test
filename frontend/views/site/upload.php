@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 $form = ActiveForm::begin() ?>
-<?= $form->field($model, 'files')->fileInput(['multiple' => true]) ?>
+<?= $form->field($model, 'files[]')->fileInput(['multiple' => true]) ?>
 <?php //= $form->field($model, 'password')->passwordInput() ?>
 
     <div class="form-group">

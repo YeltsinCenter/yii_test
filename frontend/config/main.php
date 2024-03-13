@@ -40,7 +40,8 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'upload' => 'site/upload'
+                'upload' => 'site/upload',
+                'images' => 'site/images'
             ],
         ],
     ],
