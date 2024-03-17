@@ -180,6 +180,10 @@ class SiteController extends Controller
         return $this->render('images', ['images' => $images, 'sort' => $sort]);
     }
 
+    /**
+     * Создает архив с картинкой для скачивания,
+     * а после удаляет архив
+     */
     public function actionDownload($filename)
     {
         $path = \Yii::getAlias('@frontend') . '/web';

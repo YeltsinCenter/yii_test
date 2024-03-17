@@ -46,7 +46,7 @@ return [
                 'upload' => 'site/upload',
                 'images' => 'site/images',
                 'download' => 'site/download',
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'image']
+                ['class' => 'yii\rest\UrlRule', 'pluralize' => false, 'controller' => 'image']
             ],
         ],
     ],

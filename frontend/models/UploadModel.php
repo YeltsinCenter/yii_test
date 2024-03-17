@@ -41,29 +41,4 @@ class UploadModel extends ActiveRecord
         $model->setAttribute('upload_date_time', date('d-m-Y H:i:s'));
         $model->save();
     }
-
-    public static function showImages()
-    {
-        $images = self::find()->asArray()->all();
-
-        return $images;
-    }
-
-    public function uploadAsArchive($filename)
-    {
-        $path = \Yii::getAlias('@frontend') . '/web';
-        if (file_exists($path . $filename)) {
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mime  = finfo_file($finfo, $path . $filename);
-            finfo_close($finfo);
-            $size  = filesize($path . $filename);
-
-            header("Content-Type: ".$mime);
-            header("Content-Length: ".$size);
-            header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
-            readfile($path . $filename);
-        } else {
-            throw new CHttpException(404, 'Файл не найден');
-        }
-    }
 }
