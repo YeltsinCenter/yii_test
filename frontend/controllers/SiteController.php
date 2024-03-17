@@ -4,9 +4,11 @@ namespace frontend\controllers;
 
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\UploadImageForm;
+use frontend\models\UploadModel;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\data\Sort;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -166,7 +168,47 @@ class SiteController extends Controller
 
     public function actionImages()
     {
-        return $this->render('images');
+        $sort = new Sort([
+            'attributes' => [
+                'title',
+                'upload_date_time'
+            ]
+        ]);
+
+        $images = UploadModel::find()->orderBy($sort->orders)->all();
+
+        return $this->render('images', ['images' => $images, 'sort' => $sort]);
+    }
+
+    public function actionDownload($filename)
+    {
+        $path = \Yii::getAlias('@frontend') . '/web';
+
+        $zip = new \ZipArchive();
+
+        $zip->open($path . '/tmp/archive.zip', \ZipArchive::CREATE);
+        $zip->addFile($path . '/uploads/' . $filename, $filename);
+        $zip->close();
+
+        $zip_file = $path . '/tmp/archive.zip';
+
+        if (file_exists($zip_file)) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime  = finfo_file($finfo, $zip_file);
+            finfo_close($finfo);
+            $size  = filesize($zip_file);
+
+            header("Content-Type: ".$mime);
+            header("Content-Length: ".$size);
+            header("Content-Disposition: attachment; filename=\"" . 'archive.zip' . "\"");
+            readfile($zip_file);
+        } else {
+            throw new CHttpException(404, 'Файл не найден');
+        }
+
+        unlink($zip_file);
+
+        exit;
     }
 
     /**

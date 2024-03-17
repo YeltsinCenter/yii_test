@@ -14,6 +14,9 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -41,7 +44,9 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'upload' => 'site/upload',
-                'images' => 'site/images'
+                'images' => 'site/images',
+                'download' => 'site/download',
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'image']
             ],
         ],
     ],
